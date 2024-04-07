@@ -1,38 +1,44 @@
 import asyncio
-import logging
 
-HOST = 'localhost'  # Change to server's IP address
-PORT = 8888  # Change to server's port
+from config import HOST, PORT
+from utils import print_color, color_text
+
+
+CONNECTED = False
+
 
 async def send_message(writer):
-    while True:
-        message = await loop.run_in_executor(None, input, "Enter message: ")
+    while CONNECTED:
+        message = await loop.run_in_executor(None, input)
         try:
             writer.write(message.encode())
             await writer.drain()
         except Exception as e:
-            logging.error(f"Error sending message: {e}")
-            break  # Exit the loop on error
+            print_color("red", e)
+            break
 
         await asyncio.sleep(0.1)
 
 async def receive_messages(reader):
-    while True:
+    global CONNECTED
+
+    while CONNECTED:
         data = await reader.read(1024)
         if not data:
-            # Connection closed by server
-            logging.info("Connection closed by server.")
-            return
+            print_color("red", "Connection closed by server.")
+            CONNECTED = False
         
-        logging.info(f"Received message: {data.decode()}")
+        print(data.decode())
         await asyncio.sleep(0.1)
 
-async def handle_connection():
-    reader, writer = await asyncio.open_connection(HOST, PORT)
 
-    # Receive welcome message
+async def handle_connection():
+    global CONNECTED
+    reader, writer = await asyncio.open_connection(HOST, PORT)
+    CONNECTED = True
+
     welcome_message = await reader.read(1024)
-    logging.info(welcome_message.decode())
+    print(welcome_message.decode())
 
     # Create tasks for sending and receiving messages concurrently
     send_task = asyncio.create_task(send_message(writer))
@@ -46,10 +52,10 @@ async def handle_connection():
 
 
 async def main():
-    logging.basicConfig(level=logging.INFO)
     global loop  # Declare global loop for send_message
     loop = asyncio.get_event_loop()
-    await handle_connection()  # Await the connection handling
+    await handle_connection()
+
 
 if __name__ == "__main__":
     asyncio.run(main())

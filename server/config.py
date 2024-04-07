@@ -1,3 +1,3 @@
 
-HOSTNAME = 'localhost'
+HOST = 'localhost'
 PORT = 65535
