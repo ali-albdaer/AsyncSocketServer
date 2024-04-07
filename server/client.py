@@ -1,30 +1,55 @@
 import asyncio
+import logging
 
-from config import HOSTNAME, PORT
+HOST = 'localhost'  # Change to server's IP address
+PORT = 8888  # Change to server's port
 
-
-async def connect_to_server():
-    reader, writer = await asyncio.open_connection(HOSTNAME, PORT)
-
-    message = input('>>> ')
-    writer.write(message.encode())
-    await writer.drain()
-
+async def send_message(writer):
     while True:
-        data = await reader.read(256)
+        message = await loop.run_in_executor(None, input, "Enter message: ")
+        try:
+            writer.write(message.encode())
+            await writer.drain()
+        except Exception as e:
+            logging.error(f"Error sending message: {e}")
+            break  # Exit the loop on error
 
+        await asyncio.sleep(0.1)
+
+async def receive_messages(reader):
+    while True:
+        data = await reader.read(1024)
         if not data:
-            break
+            # Connection closed by server
+            logging.info("Connection closed by server.")
+            return
+        
+        logging.info(f"Received message: {data.decode()}")
+        await asyncio.sleep(0.1)
 
-        response = data.decode()
-        print(response)
-    
-    print('Connection lost or you were kicked from the server.')
-    
+async def handle_connection():
+    reader, writer = await asyncio.open_connection(HOST, PORT)
+
+    # Receive welcome message
+    welcome_message = await reader.read(1024)
+    logging.info(welcome_message.decode())
+
+    # Create tasks for sending and receiving messages concurrently
+    send_task = asyncio.create_task(send_message(writer))
+    receive_task = asyncio.create_task(receive_messages(reader))
+
+    # Wait for both tasks to complete (send or receive or error)
+    await asyncio.gather(send_task, receive_task)  # Use asyncio.gather for concurrent waiting
+
     writer.close()
     await writer.wait_closed()
 
 
-if __name__ == '__main__':
-    loop = asyncio.new_event_loop()
-    loop.run_until_complete(connect_to_server())
+async def main():
+    logging.basicConfig(level=logging.INFO)
+    global loop  # Declare global loop for send_message
+    loop = asyncio.get_event_loop()
+    await handle_connection()  # Await the connection handling
+
+if __name__ == "__main__":
+    asyncio.run(main())
