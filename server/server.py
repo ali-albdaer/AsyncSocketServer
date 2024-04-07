@@ -22,7 +22,7 @@ async def send_all(message, writer):
 async def handle_client(reader, writer):
     client_addr = writer.get_extra_info('peername')[1]
     
-    welcome_message = f"\033[38;5;121m<<<< Welcome to the server! >>>\033[0m\n\nConnected clients: {list(clients.values())}\n".encode()
+    welcome_message = f"\033[38;5;121m\n<<< Welcome to the server! >>>\033[0m\n\nConnected clients: {list(clients.values())}\n".encode()
     writer.write(welcome_message)
     await writer.drain()
     
@@ -64,4 +64,8 @@ async def main():
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    try:
+        asyncio.run(main())
+
+    except KeyboardInterrupt:
+        print_color("red", "Server shutting down...\n")

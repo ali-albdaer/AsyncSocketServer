@@ -3,7 +3,6 @@ import asyncio
 from config import HOST, PORT
 from utils import print_color
 
-
 CONNECTED = False
 
 
@@ -57,4 +56,8 @@ async def main():
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    try:
+        asyncio.run(main())
+
+    except KeyboardInterrupt:
+        print_color("red", "Disconnected from server.")
