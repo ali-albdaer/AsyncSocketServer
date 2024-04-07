@@ -1,7 +1,7 @@
 import asyncio
 
 from config import HOST, PORT
-from utils import print_color, color_text
+from utils import print_color
 
 
 CONNECTED = False
@@ -40,19 +40,18 @@ async def handle_connection():
     welcome_message = await reader.read(1024)
     print(welcome_message.decode())
 
-    # Create tasks for sending and receiving messages concurrently
+    # Tasks for sending and receiving messages concurrently
     send_task = asyncio.create_task(send_message(writer))
     receive_task = asyncio.create_task(receive_messages(reader))
 
-    # Wait for both tasks to complete (send or receive or error)
-    await asyncio.gather(send_task, receive_task)  # Use asyncio.gather for concurrent waiting
+    await asyncio.gather(send_task, receive_task)  # asyncio.gather for concurrent waiting
 
     writer.close()
     await writer.wait_closed()
 
 
 async def main():
-    global loop  # Declare global loop for send_message
+    global loop  # global loop for send_message
     loop = asyncio.get_event_loop()
     await handle_connection()
 
