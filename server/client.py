@@ -3,12 +3,15 @@ import asyncio
 from config import HOST, PORT
 from utils import print_color
 
+
 CONNECTED = False
 
 
 async def send_message(writer):
     while CONNECTED:
-        message = await loop.run_in_executor(None, input)
+        message = await loop.run_in_executor(None, input, "\r")
+        print("\033[A\033[K", end="")  # Clear the input line
+        
         try:
             writer.write(message.encode())
             await writer.drain()

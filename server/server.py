@@ -7,13 +7,22 @@ from utils import print_color, color_text
 clients = dict()
 
 
-async def send_all(message, writer):
+async def send_all(message, writer, exclude_self=False):
     for other_writer in clients.keys():
-        if other_writer == writer:
-            continue
         try:
-            other_writer.write(message.encode())
+            if other_writer == writer:
+                if exclude_self:
+                    continue
+
+                else:
+                    sender = "You"
+
+            else:
+                sender = clients[writer]
+
+            other_writer.write(message.format(sender).encode())
             await other_writer.drain()
+
         except Exception as e:
             print_color("red", f"Error sending to client {other_writer.get_extra_info('peername')}: {e}")
             clients.pop(other_writer)
@@ -30,20 +39,20 @@ async def handle_client(reader, writer):
     joined = color_text("green", f"*** {clients[writer]} joined the server.")
     
     print(joined, f"(PORT: {client_addr})")
-    await send_all(joined, writer)
+    await send_all(joined, writer, exclude_self=True)
 
     try:
         while True:
             data = await reader.read(1024)
             if not data:
-                left = color_text("red", f"*** {clients[writer]} left the server.")
-                print(left, f"(PORT: {client_addr})")
-                await send_all(left, writer)
+                left = color_text("red", "*** {0} left the server.")
+                print(left.format(clients[writer]), f"(PORT: {client_addr})")
                 
+                await send_all(left, writer)
                 break
 
-            message = f"<{clients[writer]}> {data.decode()}"
-            print(message)
+            message = "<{0}> " + data.decode()
+            print(message.format(clients[writer]))
 
             await send_all(message, writer)
             await asyncio.sleep(0.1)
