@@ -1,4 +1,4 @@
-# Async Socket Chat
+# Async Socket Server
 
 ## Description
 An async socket chat server.
