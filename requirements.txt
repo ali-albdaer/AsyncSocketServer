@@ -1,1 +1,1 @@
-pyinstaler>=4.5.1  # optional for generating standalone executables
+# Python +3.10
