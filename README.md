@@ -1,7 +1,7 @@
 # Async Socket Server
 
 ## Description
-An async socket chat server.
+An async socket chat server and client scripts.
 
 ## Table of Contents
 - [Installation](#installation)
@@ -9,11 +9,13 @@ An async socket chat server.
 - [License](#license)
 
 ## Installation
-- There is no need to download any libraries, only Python +3.10 and asyncio are required.
+- Only Python +3.10 and asyncio are required BUT
+- pyinstaller is optional to generate exeutable files for server and client scripts. Install it using ```pip install pynstaller```
 
 ## Usage
-- Directly download apps/server.exe and apps/client.exe, provide a proper IP and Port (ex: "localhost", 8000) OR
-- Put your IP and Port in scripts/config.py and manually run scripts/server.py and scripts/client.py
+- Put your IP and Port in scripts/config.py (ex: "localhost", 8000) and: 
+- Manually run scripts/server.py and scripts/client.py OR
+- Generate exeutable files using exe.py (requires pyinstaller)
 
 ## License
 GNU General Public License
