@@ -1,3 +1,6 @@
+from config import PRINT_COLOR
+
+
 colors = {
     'black': '\033[30m',
     'red': '\033[31m',
@@ -11,9 +14,16 @@ colors = {
 }
 
 def color_text(color, text):
+    if not PRINT_COLOR:
+        return text
+    
     color = colors.get(color.lower(), colors['reset'])
     return f'{color}{text}\033[0m'
 
 def print_color(color, text):
+    if not PRINT_COLOR:
+        print(text)
+        return
+    
     color = colors.get(color.lower(), colors['reset'])
     print(f'{color}{text}\033[0m')

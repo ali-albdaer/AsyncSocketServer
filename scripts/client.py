@@ -1,3 +1,5 @@
+"""Client script for the chat application."""
+
 import asyncio
 
 from config import HOST, PORT

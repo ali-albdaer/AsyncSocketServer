@@ -9,13 +9,13 @@ An async socket chat server and client scripts.
 - [License](#license)
 
 ## Installation
-- Only Python +3.10 and asyncio (builtin) are required.
-- pyinstaller is optional to generate exeutable files for server and client scripts. Check [PyToExe](https://github.com/ali-albdaer/PyToExe)
+- No 3rd party libraries are required.
+- pyinstaller is optional to generate exeutable files for server and client scripts. See scripts/exe.py
 
 ## Usage
 - Put your IP and Port in scripts/config.py (ex: "localhost", 8000) and: 
 - Manually run scripts/server.py and scripts/client.py OR
-- Generate/download exeutable files using exe.py (generating them requires pyinstaller)
+- Generate exeutable files using scripts/exe.py (requires pyinstaller)
 
 ## License
-GNU General Public License
+This project is licensed under GNU General Public License.

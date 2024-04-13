@@ -1,3 +1,5 @@
+"""Generate executables for server and client scripts."""
+
 import os
 from shutil import rmtree
 

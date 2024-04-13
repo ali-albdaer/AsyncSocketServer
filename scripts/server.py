@@ -1,3 +1,5 @@
+"""Server script for the chat application."""
+
 import asyncio
 
 from utils import print_color, color_text
