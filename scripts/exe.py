@@ -1,4 +1,4 @@
-"""Generate executables for server and client scripts."""
+"""Generate executables for server and client scripts. Requires PyInstaller."""
 
 import os
 from shutil import rmtree

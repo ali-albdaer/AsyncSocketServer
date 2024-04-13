@@ -9,8 +9,11 @@ An async socket chat server and client scripts.
 - [License](#license)
 
 ## Installation
-- No 3rd party libraries are required.
-- pyinstaller is optional to generate exeutable files for server and client scripts. See scripts/exe.py
+- No 3rd party libraries are required to use the scripts.
+- pyinstaller is optional to generate exeutable files for server and client scripts (scripts/exe.py). To install, use:
+```python
+pip install pyinstaller
+```
 
 ## Usage
 - Put your IP and Port in scripts/config.py (ex: "localhost", 8000) and: 
