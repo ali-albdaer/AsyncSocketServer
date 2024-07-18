@@ -3,11 +3,6 @@
 ## Description
 An async socket chat server and client scripts.
 
-## Table of Contents
-- [Installation](#installation)
-- [Usage](#usage)
-- [License](#license)
-
 ## Installation
 - No external libraries are required to use the scripts.
 
