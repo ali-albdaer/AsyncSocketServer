@@ -6,7 +6,6 @@ when available, otherwise falls back to 'localhost'.
 
 import socket
 
-
 def _detect_192_168_1_ip() -> str | None:
 	"""Return the first local IPv4 address matching 192.168.1.* if found.
 
